@@ -44,8 +44,9 @@ describe('addDomain', () => {
     expect(result.id).toBeDefined();
     expect(result.created_at).toBeInstanceOf(Date);
     expect(result.updated_at).toBeInstanceOf(Date);
-    expect(result.expiry_date).toBeNull();
-    expect(result.whois_data).toBeNull();
+    // Now expect WHOIS data since we perform automatic lookup
+    expect(result.expiry_date).toBeInstanceOf(Date);
+    expect(result.whois_data).toContain('EXAMPLE.COM');
   });
 
   it('should save domain to database', async () => {

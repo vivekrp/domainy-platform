@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -213,19 +212,34 @@ function App() {
   // Utility functions
   const getStatusColor = (status: DomainStatus): string => {
     switch (status) {
-      case 'expired': return 'bg-red-500 text-white';
-      case 'expiring_soon': return 'bg-yellow-500 text-black';
-      case 'active': return 'bg-green-500 text-white';
+      case 'red': return 'bg-red-500 text-white';
+      case 'orange': return 'bg-orange-500 text-white';
+      case 'yellow': return 'bg-yellow-500 text-black';
+      case 'green': return 'bg-green-500 text-white';
+      case 'blue': return 'bg-blue-500 text-white';
       default: return 'bg-gray-500 text-white';
     }
   };
 
   const getStatusIcon = (status: DomainStatus): string => {
     switch (status) {
-      case 'expired': return '🔴';
-      case 'expiring_soon': return '⚠️';
-      case 'active': return '✅';
+      case 'red': return '🔴';
+      case 'orange': return '🟠';
+      case 'yellow': return '🟡';
+      case 'green': return '🟢';
+      case 'blue': return '🔵';
       default: return '❓';
+    }
+  };
+
+  const getStatusLabel = (status: DomainStatus): string => {
+    switch (status) {
+      case 'red': return 'Expired';
+      case 'orange': return 'Expiring Soon';
+      case 'yellow': return 'Expiring';
+      case 'green': return 'Active';
+      case 'blue': return 'Redemption';
+      default: return 'Unknown';
     }
   };
 
@@ -340,8 +354,9 @@ function App() {
           
           <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
             <DialogTrigger asChild>
-              <Button className="bg-indigo-600 hover:bg-indigo-700">
-                ➕ Add Domain
+              <Button className="btn-primary focus-ring">
+                <span className="mr-2">🌐</span>
+                Add Domain
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -426,20 +441,20 @@ function App() {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {domains.map((domain: DomainWithStatus) => (
-              <Card key={domain.id} className="hover:shadow-lg transition-shadow">
+              <Card key={domain.id} className={`domain-card hover:shadow-lg transition-all duration-300 ${domain.status === 'red' ? 'domain-status-red' : domain.status === 'orange' ? 'domain-status-orange' : ''}`}>
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <CardTitle className="text-lg flex items-center gap-2">
-                        {getStatusIcon(domain.status)}
-                        {domain.domain_name}
+                        <span className="text-xl">{getStatusIcon(domain.status)}</span>
+                        <span className="domain-name">{domain.domain_name}</span>
                       </CardTitle>
                       <CardDescription>
                         Registered with {domain.registrar}
                       </CardDescription>
                     </div>
                     <Badge className={getStatusColor(domain.status)}>
-                      {domain.status.replace('_', ' ')}
+                      {getStatusLabel(domain.status)}
                     </Badge>
                   </div>
                 </CardHeader>

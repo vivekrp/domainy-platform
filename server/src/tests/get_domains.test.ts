@@ -124,14 +124,14 @@ describe('getDomains', () => {
     const expiredDomain = result.find(d => d.domain_name === 'expired.com');
     const unknownDomain = result.find(d => d.domain_name === 'unknown.com');
 
-    expect(activeDomain?.status).toBe('active');
+    expect(activeDomain?.status).toBe('green');
     expect(activeDomain?.days_until_expiry).toBeGreaterThan(30);
 
-    expect(expiringDomain?.status).toBe('expiring_soon');
+    expect(expiringDomain?.status).toBe('orange');
     expect(expiringDomain?.days_until_expiry).toBeLessThanOrEqual(30);
     expect(expiringDomain?.days_until_expiry).toBeGreaterThan(0);
 
-    expect(expiredDomain?.status).toBe('expired');
+    expect(expiredDomain?.status).toBe('red');
     expect(expiredDomain?.days_until_expiry).toBeLessThan(0);
 
     expect(unknownDomain?.status).toBe('unknown');

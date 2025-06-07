@@ -1,4 +1,3 @@
-
 import { db } from '../db';
 import { usersTable } from '../db/schema';
 import { type RegisterUserInput, type AuthResponse } from '../schema';

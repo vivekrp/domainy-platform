@@ -1,14 +1,12 @@
-
 import { type WhoisResult } from '../schema';
 
 export const whoisLookup = async (domain_name: string): Promise<WhoisResult> => {
   try {
-    // Mock WHOIS lookup implementation
-    // In a real implementation, this would make actual WHOIS queries
-    // using a library like 'whois' or 'node-whois'
+    // Mock implementation for different domain scenarios
+    // In production, you would use actual WHOIS libraries like @cleandns/whois-rdap and whoiser
     
     // Simulate some processing delay
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 50));
     
     // Mock data based on domain name for testing purposes
     const mockResults: Record<string, Partial<WhoisResult>> = {
@@ -29,14 +27,27 @@ export const whoisLookup = async (domain_name: string): Promise<WhoisResult> => 
       }
     };
     
-    const mockData = mockResults[domain_name.toLowerCase()] || {};
+    const mockData = mockResults[domain_name.toLowerCase()];
     
+    if (mockData) {
+      return {
+        domain_name,
+        expiry_date: mockData.expiry_date || null,
+        registrar: mockData.registrar || 'Unknown Registrar',
+        whois_data: mockData.whois_data || `Domain Name: ${domain_name.toUpperCase()}\nNo additional WHOIS data available`,
+        success: true,
+        is_redemption: mockData.whois_data?.toLowerCase().includes('redemption') || false
+      };
+    }
+    
+    // Default response for unknown domains
     return {
       domain_name,
-      expiry_date: mockData.expiry_date || null,
-      registrar: mockData.registrar || 'Unknown Registrar',
-      whois_data: mockData.whois_data || `Domain Name: ${domain_name.toUpperCase()}\nNo additional WHOIS data available`,
-      success: true
+      expiry_date: null,
+      registrar: 'Unknown Registrar',
+      whois_data: `Domain Name: ${domain_name.toUpperCase()}\nNo additional WHOIS data available`,
+      success: true,
+      is_redemption: false
     };
   } catch (error) {
     console.error('WHOIS lookup failed:', error);
@@ -46,8 +57,9 @@ export const whoisLookup = async (domain_name: string): Promise<WhoisResult> => 
       domain_name,
       expiry_date: null,
       registrar: null,
-      whois_data: 'WHOIS lookup failed',
-      success: false
+      whois_data: `WHOIS lookup failed: ${error}`,
+      success: false,
+      is_redemption: false
     };
   }
 };

@@ -1,4 +1,3 @@
-
 import { pgTable, uuid, text, timestamp, json } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 

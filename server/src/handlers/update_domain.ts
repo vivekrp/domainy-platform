@@ -1,4 +1,3 @@
-
 import { db } from '../db';
 import { domainsTable } from '../db/schema';
 import { type UpdateDomainInput, type Domain } from '../schema';

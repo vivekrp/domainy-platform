@@ -1,4 +1,3 @@
-
 import { initTRPC, TRPCError } from '@trpc/server';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import 'dotenv/config';
@@ -20,7 +19,7 @@ import { updateDomain } from './handlers/update_domain';
 import { deleteDomain } from './handlers/delete_domain';
 import { whoisLookup } from './handlers/whois_lookup';
 
-// Mock context type for user authentication
+// Context type for user authentication
 interface Context {
   user?: { id: string; email: string };
 }
@@ -95,7 +94,7 @@ async function start() {
     },
   });
   server.listen(port);
-  console.log(`TRPC server listening at port: ${port}`);
+  console.log(`Domainy tRPC server listening at port: ${port}`);
 }
 
 start();
